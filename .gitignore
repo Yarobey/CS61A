@@ -1,0 +1,5 @@
+.python-version
+.DS_Store
+__pycache__
+.ok_history
+.ok_storage
