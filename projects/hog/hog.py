@@ -180,7 +180,9 @@ def always_roll(n):
     """
     assert n >= 0 and n <= 10
     # BEGIN PROBLEM 6
-    "*** YOUR CODE HERE ***"
+    def roll_strategy(score, opponent_score):
+        return n
+    return roll_strategy
     # END PROBLEM 6
 
 
@@ -211,7 +213,16 @@ def is_always_roll(strategy, goal=GOAL):
     False
     """
     # BEGIN PROBLEM 7
-    "*** YOUR CODE HERE ***"
+    score, opponent_score = 0, 0
+    num_rolls = strategy(0, 0)
+    while score < goal:
+        opponent_score = 0
+        while opponent_score < goal:
+            if strategy(score, opponent_score) != num_rolls:
+                return False
+            opponent_score += 1
+        score += 1
+    return True
     # END PROBLEM 7
 
 
@@ -227,7 +238,13 @@ def make_averaged(original_function, samples_count=1000):
     3.0
     """
     # BEGIN PROBLEM 8
-    "*** YOUR CODE HERE ***"
+    def average_value(*args):
+        i, average = samples_count, 0
+        while i > 0:
+            average += original_function(*args)
+            i -= 1
+        return average / samples_count
+    return average_value
     # END PROBLEM 8
 
 
@@ -241,7 +258,13 @@ def max_scoring_num_rolls(dice=six_sided, samples_count=1000):
     1
     """
     # BEGIN PROBLEM 9
-    "*** YOUR CODE HERE ***"
+    i, largest, num = 1, 0, 1
+    while i <= 10:
+        current = make_averaged(roll_dice, samples_count)(i, dice) 
+        if current > largest:
+            largest, num = current, i
+        i += 1
+    return num
     # END PROBLEM 9
 
 
@@ -286,24 +309,28 @@ def boar_strategy(score, opponent_score, threshold=11, num_rolls=6):
     points, and returns NUM_ROLLS otherwise. Ignore score and Sus Fuss.
     """
     # BEGIN PROBLEM 10
-    return num_rolls  # Remove this line once implemented.
+    if boar_brawl(score, opponent_score) >= threshold:
+        return 0
+    return num_rolls
     # END PROBLEM 10
 
 
 def sus_strategy(score, opponent_score, threshold=11, num_rolls=6):
     """This strategy returns 0 dice when your score would increase by at least threshold."""
     # BEGIN PROBLEM 11
-    return num_rolls  # Remove this line once implemented.
+    if sus_update(0, score, opponent_score) - score >= threshold:
+        return 0
+    return num_rolls
     # END PROBLEM 11
 
 
 def final_strategy(score, opponent_score):
-    """Write a brief description of your final strategy.
+    """Final strategy that applies all of the previous strategies that were implemented before.
 
-    *** YOUR DESCRIPTION HERE ***
+    You've been RickRolled
     """
     # BEGIN PROBLEM 12
-    return 6  # Remove this line once implemented.
+    return 0
     # END PROBLEM 12
 
 
