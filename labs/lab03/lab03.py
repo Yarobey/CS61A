@@ -28,7 +28,14 @@ def ordered_digits(x):
     False
 
     """
-    "*** YOUR CODE HERE ***"
+    prev = 10
+    cur = 0
+    while x > 0:
+        x, cur = x // 10, x % 10
+        if cur > prev:
+            return False
+        prev = cur
+    return True
 
 
 def get_k_run_starter(n, k):
@@ -52,12 +59,12 @@ def get_k_run_starter(n, k):
     """
     i = 0
     final = None
-    while ____________________________:
-        while ____________________________:
-            ____________________________
-        final = ____________________________
-        i = ____________________________
-        n = ____________________________
+    while i <= k:
+        while n > 10 and (n % 10 > (n // 10 % 10)):
+            n //= 10
+        final = n % 10
+        i = i + 1
+        n = n // 10
     return final
 
 
@@ -81,8 +88,25 @@ def nearest_two(x):
 
     """
     power_of_two = 1.0
-    "*** YOUR CODE HERE ***"
-    return power_of_two
+    power = 0
+    min = abs(pow(2, power) - x)
+    if x > 1:
+        while pow(2, power) <= x:
+            diff = abs(pow(2, power) - x)
+            if diff < min:
+                min, power_of_two = diff, pow(2, power)
+            power += 1
+        if(abs(pow(2, power) - x) <= min):
+            power_of_two = pow(2, power)
+    elif x < 1:
+        while pow(2, power) >= x:
+            diff = abs(pow(2, power) - x)
+            if diff < min:
+                min, power_of_two = diff, pow(2, power)
+            power -= 1
+        if(abs(pow(2, power) - x) < min):
+            power_of_two = pow(2, power)
+    return power_of_two * 1.0
 
 
 def make_repeater(func, n):
@@ -100,7 +124,14 @@ def make_repeater(func, n):
     >>> make_repeater(square, 0)(5) # Yes, it makes sense to apply the function zero times!
     5
     """
-    "*** YOUR CODE HERE ***"
+    new_func = func
+    i = 2
+    if n == 0:
+        return print
+    while i <= n:
+        new_func = composer(func, new_func)
+        i += 1
+    return new_func
 
 def composer(func1, func2):
     """Returns a function f, such that f(x) = func1(func2(x))."""
@@ -116,7 +147,7 @@ def apply_twice(func):
     >>> apply_twice(square)(2)
     16
     """
-    "*** YOUR CODE HERE ***"
+    return make_repeater(func, 2)
 
 
 def div_by_primes_under(n):
@@ -131,12 +162,12 @@ def div_by_primes_under(n):
     False
     """
     checker = lambda x: False
-    i = ____________________________
-    while ____________________________:
+    i = n
+    while i >= 2:
         if not checker(i):
-            checker = ____________________________
-        i = ____________________________
-    return ____________________________
+            checker = (lambda f, i: lambda x: x % i == 0 or f(x))(checker, i) 
+        i = i - 1
+    return checker
 
 def div_by_primes_under_no_lambda(n):
     """
@@ -151,14 +182,14 @@ def div_by_primes_under_no_lambda(n):
     """
     def checker(x):
         return False
-    i = ____________________________
-    while ____________________________:
+    i = 2
+    while i <= 2:
         if not checker(i):
-            def outer(____________________________):
-                def inner(____________________________):
-                    return ____________________________
-                return ____________________________
-            checker = ____________________________
-        i = ____________________________
-    return ____________________________
+            def outer(f, i):
+                def inner(x):
+                    return x % i == 0 or f(x)
+                return inner
+            checker = outer(checker, i)
+        i = i + 1
+    return checker
 
